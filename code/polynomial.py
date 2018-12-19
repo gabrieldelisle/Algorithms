@@ -1,3 +1,6 @@
+from random import random
+from numpy import exp, pi
+
 class Polynomial(object) :
     def __init__(self, s) :
         if type(s) ==list :
@@ -7,7 +10,7 @@ class Polynomial(object) :
             self.coeffs = []
             for i in range(len(s.coeffs)) :
                 self.coeffs.append(s.coeffs[i])
-        elif type(s) == int or type(s) == float:
+        elif type(s) == int or type(s) == float or type(s) == complex:
             if s==0 :
                 self.coeffs=[]
             else :
@@ -54,7 +57,7 @@ class Polynomial(object) :
         return len(self.coeffs)-1
 
     def __add__(self,b) :
-        if type(b) == int or type(b) == float :
+        if type(b) == int or type(b) == float or type(b) == complex:
             return self+Polynomial(b)
         else :
             la=len(self.coeffs)
@@ -72,7 +75,7 @@ class Polynomial(object) :
             return poly.simplify()
 
     def __sub__(self,b) :
-        if type(b) == int or type(b) == float :
+        if type(b) == int or type(b) == float or type(b) == complex:
             return self-Polynomial(b)
         else :
             la=len(self.coeffs)
@@ -92,13 +95,11 @@ class Polynomial(object) :
     def __eq__(self, b) :
         if b==0 :
             return self.degree()==-1
-        elif type(b)==Polynomial :
-            return self-b==0
         else :
-            return False
+            return self-b==0
 
     def __mul__(self, b) :
-        if type(b) == int or type(b) == float :
+        if type(b) == int or type(b) == float or type(b) == complex:
             poly = self.copy()
             for i in range(len(self.coeffs)) :
                 poly[i] = poly[i]*b
@@ -150,18 +151,22 @@ class Polynomial(object) :
         return s
 
     def derivative(self, n=1) :
-        poly=self.copy()
-        for j in range(n) :
-            for i in range(len(self.coeffs)) :
-                poly[i] = poly[i+1]*(i+1)
-        return poly
+        if n==0 :
+            return self
+        else :
+            coeffs = [0]* (len(self.coeffs)-1)
+            for i in range(len(self.coeffs)-1) :
+                coeffs[i] = self.coeffs[i+1]*(i+1)
+            return Polynomial(coeffs).derivative(n-1)
 
     def integral(self, n=1) :
-        poly=self.copy()
-        for j in range(n) :
-            for i in range(len(self.coeffs)) :
-                poly[i] = poly[i+1]/(i+1)
-        return poly
+        if n==0 :
+            return self
+        else :
+            coeffs = [0]* (len(self.coeffs)+1)
+            for i in range(1, len(self.coeffs)+1) :
+                coeffs[i] = self.coeffs[i-1]/i
+            return Polynomial(coeffs).integral(n-1)
 
     def gcd(a,b) :
         if a.degree()>b.degree():
@@ -174,6 +179,8 @@ class Polynomial(object) :
             p,q = q,p%q
         p.simplify()
         return 1/p[p.degree()]*p
+
+
 
 def lagrange(x,y) :
     # Lagrange Polynomial goes through each point (x,y) 
@@ -190,8 +197,11 @@ def lagrange(x,y) :
 X = Polynomial([0,1])
 
 if __name__ == '__main__':
+    print((X**2-1).integral())
+    print((3*X**2+1).derivative())
+
     p1 = (4*X+1)**2
-    p2 = X**2-1
+    p2 = X**2+1
     p3 = X**2-4
     p4 = p1*p2
     p5 = p1*p3
