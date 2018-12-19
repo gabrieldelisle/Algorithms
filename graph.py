@@ -124,6 +124,8 @@ class Graph:
         return deg
 
     def clusters(self) :
+        # return a list of all clusters 
+        # complexity: O(N+E)
         cl = []
         tag = {node: False for node in self.nodes}
 
