@@ -2,6 +2,7 @@ from collections import deque
 from heapq import heappush, heappop
 import matplotlib.pyplot as plt
 from math import cos, sin, pi, log
+from random import random
 
 
 class Graph:
@@ -122,6 +123,23 @@ class Graph:
             deg[len(neighbours)]+=1
         return deg
 
+    def clusters(self) :
+        cl = []
+        tag = {node: False for node in self.nodes}
+
+        for i, node in enumerate(self.nodes) :
+            if not tag[i] :
+                cl.append([])
+                pile = [node]
+                while pile :
+                    u = pile.pop()
+                    cl[-1].append(u)
+                    tag[u] = True
+                    for neighbour in self.edges[u] :
+                        if not tag[neighbour] :
+                            pile.append(neighbour)
+        return cl
+
     def __repr__(self) :
         n = len(self.nodes)
         pos = {}
@@ -184,3 +202,8 @@ if __name__ == '__main__':
     total, g2 = g.prim()
     print("minimum spanning tree has a total weight of:", total)
     print(g2)
+
+
+    g3 = erdos_renyi(20, 0.07)
+    print("clusters in erdos-renyi graph:", g3.clusters())
+    print(g3)
