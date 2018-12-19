@@ -196,7 +196,7 @@ if __name__ == '__main__':
         g.add_node(i)
     for i in range(N) :
         g.add_edge(i,(i+1)%N)
-        g.add_edge(i,(i-3)%N)
+        g.add_edge(i,(i-3)%N,2)
 
     distance, path = g.dijsktra(0, 5)
     print("shortest path from 0 to 5:", path, "(length:", distance,")")
