@@ -180,7 +180,20 @@ class Polynomial(object) :
         p.simplify()
         return 1/p[p.degree()]*p
 
-
+    def roots(self) :
+    #Aberth–Ehrlich method
+        K = self.degree()
+        if K<=0 :
+            return []
+        if K==1 :
+            return [-self.coeffs[0]/self.coeffs[1]]
+        R = 1+abs(max(self.coeffs[:-1], key=lambda x:abs(x)) / self.coeffs[-1])
+        p = self.derivative()
+        z = [random()*R*exp(random()*pi*2j) for k in range(K)]
+        for i in range(1000) :
+            w = [self.value(u)/p.value(u) / (1 - self.value(u)/p.value(u) * sum([1/(u-v) for v in z[:i]+z[i+1:] ])) for i,u in enumerate(z)]
+            z = [u-v for u,v in zip(z,w)]
+        return z
 
 def lagrange(x,y) :
     # Lagrange Polynomial goes through each point (x,y) 
@@ -216,3 +229,5 @@ if __name__ == '__main__':
     print("next ones are :")
     for i in range(4,6) :
         print(i,"->",p6.value(i))
+
+    print("\nroots of", p4, "are:", p4.roots())
