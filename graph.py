@@ -162,7 +162,7 @@ class Graph:
                 y2 = sin(pos[neighbour])-y1
                 plt.arrow(x1, y1, 2/3*x2, 2/3*y2,length_includes_head=True, head_width=hw)
                 plt.arrow(x1+2/3*x2, y1+2/3*y2, 1/3*x2, 1/3*y2,length_includes_head=True, head_width=0)
-
+        plt.axis('equal')
         plt.show()
         return 'graph plotted'
 
