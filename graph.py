@@ -34,6 +34,7 @@ class Graph:
     def dijsktra(self, initial, final=None):
         # find shortest path starting from initial node to final node
         # if there is no final node, returns shortest path to every reachable node
+        # complexity: O(E.log(N))
         colors = {}
         distances = {}
         prec = {}
@@ -69,6 +70,7 @@ class Graph:
 
     def floyd_warshall(self) :
     # compute minimal distance from each node to each other node
+    # complexity : O(N**3)
         for i in self.nodes :
             for j in self.nodes : 
                 try : 
@@ -84,6 +86,7 @@ class Graph:
 
     def prim(self) :
     # return minimum spanning tree 
+    # complexity: O(N)
         g = Graph() 
         colors = {}
         for node in self.nodes :
@@ -124,11 +127,11 @@ class Graph:
                 y1 = sin(pos[node])
                 x2 = cos(pos[neighbour])-x1
                 y2 = sin(pos[neighbour])-y1
-                plt.arrow(x1, y1, 2/3*x2, 2/3*y2, 'b',length_includes_head=True, head_width=hw)
-                plt.arrow(x1+2/3*x2, y1+2/3*y2, 1/3*x2, 1/3*y2, 'b',length_includes_head=True, head_width=0)
+                plt.arrow(x1, y1, 2/3*x2, 2/3*y2,length_includes_head=True, head_width=hw)
+                plt.arrow(x1+2/3*x2, y1+2/3*y2, 1/3*x2, 1/3*y2,length_includes_head=True, head_width=0)
 
         plt.show()
-        return 'see plot'
+        return 'graph plotted'
 
 
 if __name__ == '__main__':
@@ -143,5 +146,6 @@ if __name__ == '__main__':
     distance, path = g.dijsktra(0, 5)
     print("shortest path from 0 to 5:", path, "(length:", distance,")")
     print(g)
-    g2 = g.prim()
+    total, g2 = g.prim()
+    print("minimum spanning tree has a total weight of:", total)
     print(g2)
