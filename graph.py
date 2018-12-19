@@ -84,6 +84,11 @@ class Graph:
                     if self.distances[i,j]>self.distances[i,k]+self.distances[k,j] :
                         self.distances[i,j]=self.distances[i,k]+self.distances[k,j]
 
+    def diameter(self) :
+    # maximum distance between 2 nodes
+        self.floyd_warshall()
+        return max(self.distances.values())
+
     def prim(self) :
     # return minimum spanning tree 
     # complexity: O(N)
@@ -109,6 +114,14 @@ class Graph:
                     heappush(heap, (self.distances[node, neighbour], node, neighbour))
         return total, g
 
+    def degrees(self) :
+    # number of neighbours of each node
+        n = len(self.nodes)
+        deg = [0]*n
+        for neighbours in self.edges.values() :
+            deg[len(neighbours)]+=1
+        return deg
+
     def __repr__(self) :
         n = len(self.nodes)
         pos = {}
@@ -132,6 +145,28 @@ class Graph:
 
         plt.show()
         return 'graph plotted'
+
+def erdos_renyi(N, p) :
+    #generate random graph with a mean degree Np
+    g = Graph()
+    for i in range(N) :
+        g.add_node(i)
+    for i in range(N) :
+        for j in range(i) :
+            if random()<p :
+                g.add_edge(i,j)
+    return g
+
+def regular_graph(N,k) :
+    #generate a regular graph with a degree k
+    g = Graph()
+    for i in range(N) :
+        g.add_node(i)
+    for i in range(N) :
+        for j in range(1,k//2+1) :
+            g.add_edge(i,(i+j)%N)
+    return g
+
 
 
 if __name__ == '__main__':
